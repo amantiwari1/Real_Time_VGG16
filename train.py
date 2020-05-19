@@ -4,6 +4,9 @@
 # In[13]:
 
 
+# ========================= Import =================================
+
+
 import cv2
 from config import n, epochs
 from keras.layers import Dropout,Dense, Conv2D, MaxPooling2D, Flatten, Input, Lambda
@@ -20,7 +23,7 @@ from keras.optimizers import RMSprop
 
 # In[2]:
 
-
+# ========================= read image =================================
 
 train_datagen = ImageDataGenerator(rescale = 1./255,
                                    shear_range = 0.2,
@@ -50,6 +53,7 @@ test_set = test_datagen.flow_from_directory('image_test',
 
 # In[6]:
 
+# ========================= Model VGG16 =================================
 
 model = VGG16(weights = 'imagenet', 
                  include_top = False, 
@@ -58,6 +62,7 @@ model = VGG16(weights = 'imagenet',
 
 # In[7]:
 
+# ========================= ADD DENSE LAYER =================================
 
 def addTopModel(bottom_model, num_classes, D=256):
     """creates the top or head of the model that will be 
@@ -69,13 +74,13 @@ def addTopModel(bottom_model, num_classes, D=256):
     top_model = Dense(num_classes, activation = "softmax")(top_model)
     return top_model
 
-
-# In[14]:
-
-
 FC_Head = addTopModel(model, n)
 
 modelnew = Model(inputs=model.input, outputs=FC_Head)
+
+
+# ========================= Compile =================================
+
 modelnew.compile(loss = 'categorical_crossentropy',
               optimizer = RMSprop(lr = 0.001),
               metrics = ['accuracy'])
@@ -85,6 +90,7 @@ modelnew.summary()
 
 # In[19]:
 
+# ========================= Training =================================
 
 r = modelnew.fit_generator(
   training_set,
