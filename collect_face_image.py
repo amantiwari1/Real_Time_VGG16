@@ -61,7 +61,7 @@ for i in range(n):
 			count += 1
 
 			face = frame[y:y+h, x:x+w]
-			face = cv2.resize(face, (128, 128))
+			face = cv2.resize(face, (224, 224))
 			face_gray = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
 
 

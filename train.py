@@ -5,6 +5,7 @@
 
 
 import cv2
+from config import n, epochs
 from keras.layers import Dropout,Dense, Conv2D, MaxPooling2D, Flatten, Input, Lambda
 import keras
 import numpy as np
@@ -72,7 +73,7 @@ def addTopModel(bottom_model, num_classes, D=256):
 # In[14]:
 
 
-FC_Head = addTopModel(model, 2)
+FC_Head = addTopModel(model, n)
 
 modelnew = Model(inputs=model.input, outputs=FC_Head)
 modelnew.compile(loss = 'categorical_crossentropy',
@@ -88,7 +89,7 @@ modelnew.summary()
 r = modelnew.fit_generator(
   training_set,
   validation_data=test_set,
-  epochs=5,
+  epochs=epochs,
 )
 modelnew.save("test_vgg.h5")
 
